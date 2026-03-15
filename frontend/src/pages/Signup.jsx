@@ -4,8 +4,11 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Signup() {
-  const [form, setform] = useState();
-  const [loading, setLoading] = useState(false);
+const [form, setForm] = useState({
+  name: "",
+  email: "",
+  password: "",
+});  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -14,7 +17,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const res = await API.post("auth/signup", form);
+      const res = await API.post("/auth/signup", form);
       login(res.data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -29,16 +32,16 @@ export default function Signup() {
       <form onSubmit={handleSubmit}>
         <input
           placeholder="Name"
-          onChange={(e) => setform({ ...form, name: e.target.value })}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <input
           placeholder="Email"
-          onChange={(e) => setform({ ...form, name: e.target.value })}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setform({ ...form, name: e.target.value })}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <button>{loading ? "Creating..." : "Signup"}</button>
       </form>

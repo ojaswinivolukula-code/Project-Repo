@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
-  const [form, setform] = useState();
+  const [form, setForm] = useState();
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await API.post("auth/login", form);
+      const res = await API.post("/auth/login", form);
       login(res.data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -26,12 +26,12 @@ export default function Login() {
       <form onSubmit={handleLogin}>
         <input
           placeholder="Email"
-          onChange={(e) => setform({ ...form, name: e.target.value })}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setform({ ...form, name: e.target.value })}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <button>Login</button>
       </form>
