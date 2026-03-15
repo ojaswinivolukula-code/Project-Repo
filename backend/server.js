@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("api/account", accountRoutes);
+app.use("/api/account", accountRoutes);
 
 app.get("/", (req, res) => {
   res.send("Api running");
