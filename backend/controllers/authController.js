@@ -1,31 +1,37 @@
 import bcrypt from "bcrypt";
-import supabase from "../config/supabaseClient";
-import generateToken from "../utils/generateToken";
+import supabase from "../config/supabaseClient.js";
+import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const { data, error } = await supabase
       .from("users")
       .insert([
         {
-          id,
           name,
           email,
           password: hashedPassword,
-          balance: 10000,
         },
       ])
       .select()
       .single();
-    if (error)
-      throw errorres.json({
-        token: generateToken(data),
-        user: data,
-      });
+
+    if (error || !data) {
+      return res
+        .status(400)
+        .json({ message: error?.message || " failed to create user" });
+    }
+
+    res.json({
+      token: generateToken(data),
+      user: data,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
